@@ -1,0 +1,12 @@
+.slider-viewport {
+	width: 400px;
+	overflow: hidden;
+}
+
+.image-container {
+	width: 1500px;
+}
+
+.image-container > img {
+	width: 400px;
+}
