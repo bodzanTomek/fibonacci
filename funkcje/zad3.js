@@ -6,29 +6,28 @@ function fib(n){
     for(var i=2; i<n; i++){
         tab[i]=tab[i-2]+tab[i-1];
     }
-    getFib(tab);
+    return tab;
 }
 
 function getFib(tab){
-        for(var i of tab){
-        console.log(i);
+        var number=parseInt(prompt("podaj liczbę:", ""));
+        var fibTab=fib(number);
+        viewFib(number,fibTab);
+}
+
+function viewFib(number,fibTab){
+        var elementDiv=document.getElementById('container');
+        var text = elementDiv.firstElementChild.textContent;
+        text +=" "+number+" to:";
+        elementDiv.firstElementChild.textContent=text;
+      
+        var fibText='';
+        for(var i of fibTab){
+          fibText+=i+' ';
         }
+        elementDiv.innerHTML+='<p>'+fibText+'</p>';
 }
 
 $(function () {
-    
-    var number=parseInt(prompt("podaj liczbę:", ""));
-    var text='';
-    fib(number);
-/*
-    var div = document.getElementById('container').innerText;
-    div +=" "+number+" to:";
-    document.getElementById('container').innerHTML="<h1 style='color:white;'>"+div+"</h1>";
-
-    for(var i of tab){
-        text+=i+' ';
-    }
-    document.getElementById('container').innerHTML+='<p>'+text+'</p>';
-
-*/
+    getFib();
 });
