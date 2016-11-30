@@ -1,29 +1,25 @@
 /*4.Funkcja przyjmuje tablicę i zwraca tablicę asocjacyjną dla podanego obiektu (table asocjacyjna jest de facto obiektem)
    tzn. createDictionary([1, 'a', 'a', 'a', 7]) powinno zwrócić obiekt: {a: 3, 1: 1, 7: 1} */
 
-function createTable(){
+function startProgram(){
     var table = ['a',5,1,7,5,'a',1,4,5,7,5,'b',5,'a',1];
-    createAssociativeTable(table);
+    var associativeTable={};
+    associativeTable= createAssociativeTable(table);
+    viewAssociativeTable(associativeTable);
 }
 
 function createAssociativeTable(table){
     var associativeTable={};
     associativeTable[table[0]]=0;//dlaczego nie mogę obiekt.table[0]=0;
-    isIt=false;
+    //var isIt=false;
 
-    for(var i of table){
-    i=i.toString();
-        for(var key in associativeTable){
-            if(i===key) isIt=true;
-        }
-        if(isIt){
-            associativeTable[i]=(associativeTable[i])+1
-            isIt=false;
-        }else{
-            associativeTable[i]=1;
-        }
+    for(var value of table){
+        value=value.toString();
+        if(value in associativeTable)
+            associativeTable[value]=(associativeTable[value])+1;
+            else associativeTable[value]=1;
     }
-    viewAssociativeTable(associativeTable)
+    return associativeTable;
 }
 
 function viewAssociativeTable(associativeTable){
@@ -32,4 +28,4 @@ function viewAssociativeTable(associativeTable){
     }
 }
 
-createTable();
+startProgram();
