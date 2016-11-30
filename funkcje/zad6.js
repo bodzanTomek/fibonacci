@@ -21,8 +21,8 @@ function sort(tab){
 }
 
 function viewTab(tab){
-    for(var i of inTab){
-        console.log(i);
+    for(var value of inTab){
+        console.log(value);
     }
 }
 
