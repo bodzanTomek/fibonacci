@@ -4,11 +4,11 @@
 function startProgram() {
     var myArray = ['a', 5, 1, 7, 5, 'a', 1, 4, 5, 7, 5, 'b', 5, 'a', 1];
     var associativeArray = {};
-    associativeArray = createAssociativeTable(myArray, associativeArray);
-    viewAssociativeTable(associativeArray);
+    associativeArray = createAssociativeArray(myArray, associativeArray);
+    viewAssociativeArray(associativeArray);
 }
 
-function createAssociativeTable(myArray, associativeArray) {
+function createAssociativeArray(myArray, associativeArray) {
     for (var value of myArray) {
         value = value.toString();
         if (value in associativeArray)
@@ -18,7 +18,7 @@ function createAssociativeTable(myArray, associativeArray) {
     return associativeArray;
 }
 
-function viewAssociativeTable(associativeArray) {
+function viewAssociativeArray(associativeArray) {
     for (var key in associativeArray) {
         console.log("znaków - " + key + " wystąpiło " + associativeArray[key] + " razy");
     }
