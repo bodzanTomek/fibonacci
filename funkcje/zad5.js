@@ -3,24 +3,29 @@ Stwórz funkcje zachowujące się tak samo jak:
  - Array.prototype.filter,
  - Array.prototype.map*/
 
- var table = [5,1,7,5];
- var out =[];
+var inArray = [5, 1, 7, 5];
+var outArray = [];
+
 
 function mnozenie(index) {
-    return index=index*3;
+    return index = index * 3;
 }
 
-Array.prototype.myMap = 
-     function(funkcja){
-        var tab=[];
-        i=0;
-        for(var value of this){
-            tab[i]=funkcja(value);
-            i++;
+function myMap(inArray, mnozenie) {
+    var auxiliaryOutArray = [];
+    if (typeof(mnozenie) === "function") {
+        for (var index = 0; index < inArray.length; index++) {
+            auxiliaryOutArray[index] = mnozenie(inArray[index]);
         }
-        for(var value of tab){
-            console.log(value);
-        }
-    }
+        return auxiliaryOutArray;
+    } else { return "blad parametrow" }
+}
 
-out=table.myMap(mnozenie);
+function viewOutArray(outArray) {
+    for (var value of outArray) {
+        console.log(value);
+    }
+}
+
+outArray = myMap(inArray, mnozenie);
+viewOutArray(outArray);
