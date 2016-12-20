@@ -3,29 +3,39 @@ Stwórz funkcje zachowujące się tak samo jak:
  - Array.prototype.filter,
  - Array.prototype.map*/
 
-var inArray = [5, 1, 7, 5];
-var outArray = [];
-
-
-function mnozenie(index) {
+function myFunction(index) {
     return index = index * 3;
 }
 
-function myMap(inArray, mnozenie) {
-    var auxiliaryOutArray = [];
-    if (typeof(mnozenie) === "function") {
-        for (var index = 0; index < inArray.length; index++) {
-            auxiliaryOutArray[index] = mnozenie(inArray[index]);
-        }
-        return auxiliaryOutArray;
-    } else { return "blad parametrow" }
+function condition(x) {
+    return x > 0;
 }
 
-function viewOutArray(outArray) {
-    for (var value of outArray) {
-        console.log(value);
+
+function mapArray(array, myFunction) {
+    var logArray = [];
+    for (var index = 0; index < array.length; index++) {
+        logArray[index] = myFunction(array[index]);
     }
+    return logArray;
 }
 
-outArray = myMap(inArray, mnozenie);
-viewOutArray(outArray);
+function everyElementInArray(array, condition) {
+    var result;
+    for (var index = 0; index < array.length; index++) {
+        result = condition(array[index]);
+        if (result === false)
+            return false;
+    }
+    return true;
+}
+
+function viewArray(array) {
+    console.log(array);
+}
+
+viewArray(mapArray([1, 2, 3], myFunction));
+console.log(everyElementInArray([1, 2, 3], condition));
+console.log(everyElementInArray([1, -2, 3], condition));
+
+(module = module || {}).exports = { everyElementInArray, mapArray };
