@@ -1,21 +1,26 @@
-/*2.Funkcja przyjmuje tablicę i zwraca nową tablicę elementów, które posiadają parzyste indeksy*/
+/*2.Funkcja przyjmuje tablicę i zwraca nową tablicę elementów, 
+które posiadają parzyste indeksy*/
 
-function setTab(tablica){
-    var pomTablica=[];
-    for(var i=0; i<tablica.length; i++){
-        if(i % 2 === 0){
-            pomTablica.push(tablica[i]);
+function setArray(array) {
+    var ancillaryArray = [];
+    for (var i = 0; i < array.length; i++) {
+        if (i % 2 === 0) {
+            ancillaryArray.push(array[i]);
         }
     }
-    return pomTablica;
+    return ancillaryArray;
 }
 
-function getTab(tablica){
-        for(var i of tablica){
-        console.log(i);
-        }
+function viewArray(array) {
+    for (var value of array) {
+        console.log(value);
+    }
 }
 
-var liczby=[10,2,30,4,50,6,70,8,90];
-var parzyste=setTab(liczby);
-getTab(parzyste);
+
+(function() {
+    var myArray = [10, 2, 30, 4, 50, 6, 70, 8, 90];
+    viewArray(setArray(myArray));
+})();
+
+(module = module || {}).exports = { setArray };
