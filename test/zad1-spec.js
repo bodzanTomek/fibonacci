@@ -3,8 +3,8 @@
 const assert = require('assert');
 const { getKeys } = require('../funkcje/zad1');
 
-describe('getKeys', function() {
-    it('test1', function() {
+describe('zad1 - getKeys', function() {
+    it('return keys from object', function() {
         const result = getKeys({
             imie: 'Jan',
             nazwisko: 'Kowalski',

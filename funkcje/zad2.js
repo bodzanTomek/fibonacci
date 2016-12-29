@@ -2,25 +2,13 @@
 które posiadają parzyste indeksy*/
 
 function setArray(array) {
-    var ancillaryArray = [];
+    var logArray = [];
     for (var i = 0; i < array.length; i++) {
         if (i % 2 === 0) {
-            ancillaryArray.push(array[i]);
+            logArray.push(array[i]);
         }
     }
-    return ancillaryArray;
+    return logArray;
 }
 
-function viewArray(array) {
-    for (var value of array) {
-        console.log(value);
-    }
-}
-
-
-(function() {
-    var myArray = [10, 2, 30, 4, 50, 6, 70, 8, 90];
-    viewArray(setArray(myArray));
-})();
-
-(module = module || {}).exports = { setArray };
+(module || {}).exports = { setArray };

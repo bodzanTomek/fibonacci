@@ -8,25 +8,15 @@
 
 // compose( add1, multiplyBy4 ) (3) // 16. (3 + 1) * 4
 
-function add1(x) {
-    return x + 1;
-}
-
-function multiplyBy4(x) { return x * 4 }
-
-function scoreFunctions(score) {
-    console.log("wynik wszystkich funkcji to :" + score)
-}
-
 function compose() {
-    var args = arguments;
+    var functions = arguments;
     return function composeInside() {
         var score = arguments[0];
-        for (var index = 0; index < args.length; index++) {
-            score = args[index](score);
+        for (var index = 0; index < functions.length; index++) {
+            score = functions[index](score);
         }
-        scoreFunctions(score)
+        return score
     }
 }
 
-compose(add1, multiplyBy4)(3);
+(module || {}).exports = { compose };

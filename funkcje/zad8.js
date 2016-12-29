@@ -30,4 +30,4 @@ function sum4() {
     return sumInside;
 }
 
-console.log('Wynik dodawania czterech liczb : ' + sum4(1)(2)(3)(4, 5));
+(module || {}).exports = { sum4 };

@@ -2,30 +2,21 @@
 // Zaimplementuj sortowanie bąbelkowe dla tablicy liczb.
 // Przykład użycia: sort([1, 9, 4, 5]) // [1, 4, 5, 9]
 
-var inTab=[2,4,11,7,1,9,21,6,3,8];
-
-function sort(tab){
+function sort(tab) {
     var auxiliaryVariable;
-    var n=tab.length;
+    var n = tab.length;
 
-    do{
-        for(i=0;i<n-1;i++){
-            if(tab[i]>tab[i+1]){
-                auxiliaryVariable=tab[i];
-                tab[i]=tab[i+1];
-                tab[i+1]=auxiliaryVariable;//znaleźć metodę zamiany miejscami
+    do {
+        for (var i = 0; i < n - 1; i++) {
+            if (tab[i] > tab[i + 1]) {
+                auxiliaryVariable = tab[i];
+                tab[i] = tab[i + 1];
+                tab[i + 1] = auxiliaryVariable;
             }
         }
         n--;
-    }while(n>1)
+    } while (n > 1);
+    return tab
 }
 
-function viewTab(tab){
-    for(var value of inTab){
-        console.log(value);
-    }
-}
-
-sort(inTab);
-viewTab(inTab);
-
+(module || {}).exports = { sort };
