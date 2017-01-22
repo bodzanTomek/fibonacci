@@ -13,10 +13,13 @@ class Color {
     constructor() {
         this.color = "";
         for (let value of arguments) {
+            console.log(value);
             this.color += value + ",";
+            console.log(this.color);
         }
         this.color = this.color.substr(0, (this.color.length - 1));
-        console.log('konstruktor - ' + this.color);
+        this.color = this.color.replace(/%/g, "");
+        console.log('konstruktor - ' + this.color + "    " + typeof(this.color));
     }
 
     hexToRGB() {
@@ -148,14 +151,15 @@ class Color {
 
 }
 
-// const c = new Color('#ff9a1f');
+//const c = new Color('#ff9a1f');
 // console.log(c.hexToRGB());
 // console.log(c.hexToNumber());
-const d = new Color(43, 0, 53);
+//const d = new Color(43, "0%", "53%");
+//const d = new Color(43, 0, 53);
 // console.log(d.rgbToHex());
 // console.log(d.rgbToNumber());
 // console.log(d.rgbToHsl());
-// const e = new Color(16751135);
+//const e = new Color(16751135);
 // console.log(e.numberToHex());
 // console.log(e.numberToRgb());
-console.log(d.hslToRgb());
+//console.log(d.hslToRgb());
