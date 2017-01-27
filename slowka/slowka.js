@@ -4,7 +4,7 @@ window.addEventListener('load', () => {
 class Slowka {
     constructor() {
 
-        var dataPromise = fetch('data.json')
+        fetch('data.json')
             .then(response => response.json())
             .then(function(values) { this.initialize(values) }.bind(this))
 
