@@ -1,177 +1,45 @@
 class Color {
     constructor() {
-        this.color = "";
-        this.hsl = "";
-        this.hex = "";
-        this.rgb = "";
-        this.number = "";
-
-        for (let value of arguments) {
-            this.color += value + ",";
+        if ((arguments.length == 3) && (typeof(arguments[1]) == "number")) { //czy konstruktor to rgb
+            this.rgb = this.parseRgb(arguments);
         }
-
-        this.color = this.color.substr(0, (this.color.length - 1)); //usówamy ostatni przecinek
-
-        if (this.color.toString().indexOf(",") != -1)
-            if (this.color.toString().indexOf("%") == -1) { //czy konstruktor to rgb
-                this.rgb = this.color;
-            }
-        if (this.color.toString().indexOf(",") == -1)
-            if (this.color.toString().indexOf("#") == -1) { //czy konstruktor to number
-                this.number = this.color;
-            }
-        if (this.color.toString().indexOf("%") != -1) { //czy konstruktor to hsl
-            this.hsl = this.color;
+        if ((arguments.length == 1) && (typeof(arguments[0]) == "number")) { //czy konstruktor to number
+            this.rgb = this.parseNumber(arguments);
         }
-        if (this.color.toString().indexOf("#") != -1) { //czy konstruktor to hex
-            this.hex = this.color;
+        if ((arguments.length == 3) && (typeof(arguments[1]) == "string")) { //czy konstruktor to hsl
+            this.rgb = this.parseHsl(arguments);
+        }
+        if ((arguments.length == 1) && (typeof(arguments[0]) == "string")) { //czy konstruktor to hex
+            this.rgb = this.parseHex(arguments);
         }
     }
 
-    toHsl() {
-        if (this.hsl != "") {
-            return this.hsl;
-        }
-        if (this.hex != "") {
-            this.color = this.hexToRgb();
-            return this.rgbToHsl();
-        }
-        if (this.rgb != "") {
-            return this.rgbToHsl();
-        }
-        if (this.number != "") {
-            this.color = this.numberToRgb();
-            return this.rgbToHsl();
+    parseNumber(args) {
+        return {
+            red: Math.floor(args[0] / (256 * 256)),
+            green: Math.floor(args[0] / 256) % 256,
+            blue: args[0] % 256,
         }
     }
-    toRgb() {
-        if (this.hsl != "") {
-            return this.hslToRgb();
-        }
-        if (this.hex != "") {
-            return this.hexToRgb();
-        }
-        if (this.rgb != "") {
-            return this.rgb;
-        }
-        if (this.number != "") {
-            return this.numberToRgb();
+    parseRgb(args) {
+        return {
+            red: args[0],
+            green: args[1],
+            blue: args[2],
         }
     }
-    toHex() {
-        if (this.hsl != "") {
-            this.color = this.hslToRgb();
-            return this.rgbToHex();
-        }
-        if (this.hex != "") {
-            return this.hex;
-        }
-        if (this.rgb != "") {
-            return this.rgbToHex();
-        }
-        if (this.number != "") {
-            return this.numberToHex();
+    parseHex(args) {
+        return {
+            red: parseInt(args[0].substr(1, 2), 16),
+            green: parseInt(args[0].substr(3, 2), 16),
+            blue: parseInt(args[0].substr(5, 2), 16),
         }
     }
-    toNumber() {
-        if (this.hsl != "") {
-            this.color = this.hslToRgb();
-            return this.rgbToNumber();
-        }
-        if (this.hex != "") {
-            return this.hexToNumber();
-        }
-        if (this.rgb != "") {
-            return this.rgbToNumber();
-        }
-        if (this.number != "") {
-            return this.number;
-        }
-    }
-
-    numberToRgb() {
-        var hex = parseInt(this.number).toString(16); //numberToHex
-        var ancillaryVariable;
-        var rgb = "";
-        var j = 0;
-        for (var i = 0; i < 3; i++) {
-            ancillaryVariable = parseInt(hex.substr(j, 2), 16);
-            rgb += ancillaryVariable + ", ";
-            j += 2;
-        }
-        rgb = rgb.substr(0, (rgb.length - 2)); //usuwam ostatni przecinek i spację
-        return rgb;
-    }
-    rgbToHsl() {
-        var numbersRgb = this.color.split(',');
-        var r = numbersRgb[0] / 255;
-        var g = numbersRgb[1] / 255;
-        var b = numbersRgb[2] / 255;
-        var cmax = Math.max(r, g, b);
-        var cmin = Math.min(r, g, b);
-        var delta = cmax - cmin;
-        var l = (cmax + cmin) / 2;
-        var s, h, hsl;
-
-        if (delta == 0) {
-            s = 0;
-            h = 0;
-        } else {
-            s = delta / (1 - Math.abs(2 * l - 1));
-        }
-
-        if (cmax === r) {
-            h = (60 / 100) * (((g - b) / delta) % 6);
-        }
-        if (cmax === g) {
-            h = (60 / 100) * (((b - r) / delta) + 2);
-        }
-        if (cmax === b) {
-            h = (60 / 100) * (((r - g) / delta) + 4);
-        }
-        l = Math.round(100 * l) + "%";
-        s = Math.round(100 * s) + "%";
-        h = Math.round(h * 100);
-        hsl = h + "," + s + "," + l;
-        return hsl;
-    }
-    hexToNumber() {
-        var h = parseInt(this.hex.substr(1), 16);
-        return h;
-    }
-    hexToRgb() {
-        var ancillaryVariable;
-        var rgb = "";
-        var j = 1;
-        for (var i = 0; i < 3; i++) {
-            ancillaryVariable = parseInt(this.hex.substr(j, 2), 16);
-            rgb += ancillaryVariable + ", ";
-            j += 2;
-        }
-        rgb = rgb.substr(0, (rgb.length - 2));
-        return rgb;
-    }
-    rgbToNumber() {
-        var hex = this.rgbToHex();
-        var number = parseInt(hex.substr(1), 16);
-        return number;
-    }
-    rgbToHex() {
-        var hex = "#";
-        var numbersRgb = this.color.split(',');
-        for (let value of numbersRgb) {
-            hex += parseInt(value).toString(16);
-        }
-        return (hex);
-    }
-
-    hslToRgb() {
-        var r, b, g, rgb;
-        var numbersHsl = this.hsl.replace(/%/g, ""); //usówamy procenty
-        numbersHsl = numbersHsl.split(',');
-        var h = numbersHsl[0];
-        var s = numbersHsl[1] / 100;
-        var l = numbersHsl[2] / 100;
+    parseHsl(args) {
+        var r, g, b;
+        var h = parseInt(args[0]);
+        var s = parseInt(args[1]) / 100;
+        var l = parseInt(args[2]) / 100;
         var c = ((1 - Math.abs(2 * l - 1)) * s);
         var x = c * (1 - Math.abs((h / 60) % 2 - 1));
         var m = l - c / 2;
@@ -206,37 +74,81 @@ class Color {
             g = 0;
             b = x;
         }
-        r = Math.round((r + m) * 255);
-        g = Math.round((g + m) * 255);
-        b = Math.round((b + m) * 255);
-        rgb = r + ", " + g + ", " + b;
+        return {
+            red: Math.round((r + m) * 255),
+            green: Math.round((g + m) * 255),
+            blue: b = Math.round((b + m) * 255),
+        }
+    }
+    toNumber() {
+        return (this.rgb.red * (256 * 256)) + (this.rgb.green * 256) + this.rgb.blue;
+    }
+    toRgb() {
+        var rgb = "";
+        for (let key in this.rgb) {
+            rgb += this.rgb[key] + ",";
+        }
+        rgb = rgb.substr(0, (rgb.length - 1)); //usówamy ostatni przecinek
         return rgb;
     }
-    numberToHex() {
-        var number = parseInt(this.number).toString(16);
-        return number;
+    toHex() {
+        var hex = "#";
+        for (let key in this.rgb) {
+            hex += this.rgb[key].toString(16);
+        }
+        return (hex);
+    }
+    toHsl() {
+        var r = this.rgb.red / 255;
+        var g = this.rgb.green / 255;
+        var b = this.rgb.blue / 255;
+        var cmax = Math.max(r, g, b);
+        var cmin = Math.min(r, g, b);
+        var delta = cmax - cmin;
+        var l = (cmax + cmin) / 2;
+        var s, h, hsl;
+
+        if (delta == 0) {
+            s = 0;
+            h = 0;
+        } else {
+            s = delta / (1 - Math.abs(2 * l - 1));
+        }
+
+        if (cmax === r) {
+            h = (60 / 100) * (((g - b) / delta) % 6);
+        }
+        if (cmax === g) {
+            h = (60 / 100) * (((b - r) / delta) + 2);
+        }
+        if (cmax === b) {
+            h = (60 / 100) * (((r - g) / delta) + 4);
+        }
+        l = Math.round(100 * l) + "%";
+        s = Math.round(100 * s) + "%";
+        h = Math.round(h * 100);
+        hsl = h + "," + s + "," + l;
+        return hsl;
     }
 
 
 }
-
-
 const c = new Color('#ff9a1f');
 console.log(c.toRgb());
 console.log(c.toHex());
 console.log(c.toNumber());
 console.log(c.toHsl());
-const d = new Color(33, "100%", "56%");
+const d = new Color(243, '100%', '56%');
 console.log(d.toHsl());
 console.log(d.toRgb());
 console.log(d.toHex());
 console.log(d.toNumber());
-const e = new Color(255, 154, 31);
+const e = new Color(161, 155, 75);
 console.log(e.toNumber());
 console.log(e.toHsl());
 console.log(e.toRgb());
 console.log(e.toHex());
-const f = new Color(16751135);
+const f = new Color(10111904);
 console.log(f.toHex());
 console.log(f.toNumber());
 console.log(f.toHsl());
