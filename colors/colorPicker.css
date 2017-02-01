@@ -1,0 +1,12 @@
+#colorPicker {
+    width: 260px;
+    height: 260px;
+    background: rgb(138, 102, 066);
+}
+
+#r {
+    width: 260px;
+    height: 20px;
+    margin: 0;
+    padding: 0;
+}
