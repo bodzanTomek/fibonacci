@@ -9,12 +9,31 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="colorPicker.js"></script>
+    <script src="color1.js"></script>
 </head>
 
-<body style="background-color:yellow;">
-    <div id="colorPicker">
+<body>
+    <canvas id="colorPalette"></canvas>
+    <div id="second">
+        <div id="colorPrewiew"></div>
+
+        <div id="colorValues">
+            <div>
+                <input type="text" name="rgb" id="rgbText" value="rgb(0,130,130)">
+            </div>
+            <div>
+                <input type="text" name="hex" id="hexText" value="hex">
+            </div>
+            <div>
+                <input type="text" name="hsl" id="hslText" value="hsl">
+            </div>
+            <div>
+                <input type="text" name="number" id="numberText" ´value="number">
+            </div>
+        </div>
+
+        <input id="colorChanger" type="range" name="points" min="0" max="250" step="10" value="0">
     </div>
-    <input id="r" type="range" name="points" min="0" max="250" step="10" value="0">
 </body>
 
 </html>
