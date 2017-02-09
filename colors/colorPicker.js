@@ -2,88 +2,165 @@
 //const Color = require('./color1');
 
 window.addEventListener('load', () => {
-    new ColorPicker();
+    new ColorPicker({
+        id: "colorPicker",
+    });
+    new ColorPicker({
+        id: "colorPicker2",
+    });
 });
 
 class ColorPicker {
-    constructor() {
-        this.getDOMvalues();
-        this.initializeElements();
+    constructor(divId) {
+        const rootId = divId.id;
+        this.createDOM(rootId);
+        this.setColorPaletteColor(255, 0, 0);
+        this.drawColorPalette(this.paletteColor.toRgb());
+        this.setColorSample(130, 130);
+        this.drawColorSample(this.sampleColor.toRgb());
+        this.setColorAsideElements(this.sampleColor);
         this.addListeners();
     }
-
-    getDOMvalues() {
-        this.colorPalette = document.getElementById('colorPalette');
-        this.colorPrewiew = document.getElementById('colorPrewiew');
-        this.rgbText = document.getElementById('rgbText');
-        this.hexText = document.getElementById('hexText');
-        this.hslText = document.getElementById('hslText');
-        this.numberText = document.getElementById('numberText');
-        this.colorChanger = document.getElementById('colorChanger');
-    }
-    initializeElements() {
-        this.ColorSamplePositionX = 130;
-        this.ColorSamplePositionY = 130;
-        this.gFromRgb = 130;
-        this.bFromRgb = 130;
+    createDOM(rootId) {
+        this.root = document.getElementById(rootId);
+        this.colorPalette = document.createElement('canvas');
+        this.colorPalette.className = "colorPalette";
         this.colorPalette.width = 255;
         this.colorPalette.height = 255;
         this.contextColorPalette = this.colorPalette.getContext('2d');
-        this.colorPrewiew.style.background = "rgb(0,130,130)";
-        this.hexText.value = "hex(#008282)";
-        this.hslText.value = "hsl(180,100%,25%)";
-        this.numberText.value = "number(33410)";
-        this.drawColorPalette(0);
-        this.drawColorSample("rgb(0,130,130)");
+        this.root.appendChild(this.colorPalette);
+        let asideContainer = document.createElement('div');
+        asideContainer.className = "asideContainer"
+        this.root.appendChild(asideContainer);
+
+        this.colorPrewiew = document.createElement('div');
+        this.colorPrewiew.className = "colorPrewiew";
+        this.colorPrewiew.style.border = '1px solid black';
+        asideContainer.appendChild(this.colorPrewiew);
+        let colorValues = document.createElement('div');
+        colorValues.className = "colorValues"
+        asideContainer.appendChild(colorValues);
+        this.colorChanger = document.createElement('input');
+        this.colorChanger.className = "colorChanger";
+        this.colorChanger.type = "range";
+        this.colorChanger.min = "0";
+        this.colorChanger.max = "1500";
+        this.colorChanger.step = "1";
+        this.colorChanger.value = 0;
+        asideContainer.appendChild(this.colorChanger);
+
+
+        this.rgbText = document.createElement('input');
+        this.rgbText.className = "rgbText";
+        this.rgbText.type = "text";
+        this.rgbText.value = "rgb";
+        colorValues.appendChild(this.rgbText);
+        this.hexText = document.createElement('input');
+        this.hexText.className = "hexText";
+        this.hexText.type = "text";
+        this.hexText.value = "hex";
+        colorValues.appendChild(this.hexText);
+        this.hslText = document.createElement('input');
+        this.hslText.className = "hslText";
+        this.hslText.type = "text";
+        this.hslText.value = "hsl";
+        colorValues.appendChild(this.hslText);
+        this.numberText = document.createElement('input');
+        this.numberText.className = "numberText";
+        this.numberText.type = "text";
+        this.numberText.value = "number";
+        colorValues.appendChild(this.numberText);
     }
-    drawColorPalette(r) {
-        let rgb, g, b;
-        for (g = 0; g < 256; g += 1) {
-            for (b = 0; b < 256; b += 1) {
-                rgb = "rgb(" + r + "," + g + "," + b + ")";
-                this.contextColorPalette.fillStyle = rgb;
-                this.contextColorPalette.fillRect(b, g, 1, 1);
-            }
-        }
+    setColorPaletteColor(r, g, b) {
+        this.colorPalette_R = r;
+        this.colorPalette_G = g;
+        this.colorPalette_B = b;
+        this.paletteColor = new Color(this.colorPalette_R, this.colorPalette_G, this.colorPalette_B);
+    }
+    drawColorPalette(color) {
+        var gradient = this.contextColorPalette.createLinearGradient(0, 0, 255, 0);
+        gradient.addColorStop(0.02, "white");
+        gradient.addColorStop(0.98, color);
+        this.contextColorPalette.fillStyle = gradient;
+        this.contextColorPalette.fillRect(0, 0, 255, 255);
+
+        var gradient1 = this.contextColorPalette.createLinearGradient(0, 0, 0, 255);
+        gradient1.addColorStop(0.02, 'rgba(255, 255, 255, 0)');
+        gradient1.addColorStop(0.98, "black");
+        this.contextColorPalette.fillStyle = gradient1;
+        this.contextColorPalette.fillRect(0, 0, 255, 255);
+    }
+    setColorSample(x, y) {
+        this.colorSamplePositionX = x;
+        this.colorSamplePositionY = y;
+        this.colorSample_R = this.contextColorPalette.getImageData(this.colorSamplePositionX, this.colorSamplePositionY, 1, 1).data[0];
+        this.colorSample_G = this.contextColorPalette.getImageData(this.colorSamplePositionX, this.colorSamplePositionY, 1, 1).data[1];
+        this.colorSample_B = this.contextColorPalette.getImageData(this.colorSamplePositionX, this.colorSamplePositionY, 1, 1).data[2];
+        this.sampleColor = new Color(this.colorSample_R, this.colorSample_G, this.colorSample_B);
     }
     drawColorSample(rgb) {
         this.contextColorPalette.beginPath();
-        this.contextColorPalette.arc(this.ColorSamplePositionX, this.ColorSamplePositionY, 8, 0, 10 * Math.PI);
+        this.contextColorPalette.arc(this.colorSamplePositionX, this.colorSamplePositionY, 8, 0, 10 * Math.PI);
         this.contextColorPalette.strokeStyle = "white";
         this.contextColorPalette.fillStyle = rgb;
         this.contextColorPalette.lineWidth = 6;
         this.contextColorPalette.stroke();
-        //this.contextColorPalette.closePath;
         this.contextColorPalette.fill();
+    }
+    setColorAsideElements(color) {
+        this.colorPrewiew.style.background = color.toRgb();
+        this.rgbText.value = color.toRgb();
+        this.hexText.value = color.toHex();
+        this.hslText.value = color.toHsl();
+        this.numberText.value = color.toNumber();
     }
     addListeners() {
         this.colorChanger.addEventListener("change", function() { this.runColorChanger(parseInt(this.colorChanger.value)); }.bind(this));
         this.colorPalette.addEventListener('click', function(e) { this.clickedColor(e); }.bind(this));
     }
-    clickedColor(e) {
-        let rFromRgb = this.contextColorPalette.getImageData(e.offsetX, e.offsetY, 1, 1).data[0];
-        this.gFromRgb = this.contextColorPalette.getImageData(e.offsetX, e.offsetY, 1, 1).data[1];
-        this.bFromRgb = this.contextColorPalette.getImageData(e.offsetX, e.offsetY, 1, 1).data[2];
-        this.ColorSamplePositionX = e.offsetX;
-        this.ColorSamplePositionY = e.offsetY;
-        this.color = new Color(rFromRgb, this.gFromRgb, this.bFromRgb);
-        this.colorPrewiew.style.background = this.color.toRgb();
-        this.rgbText.value = this.color.toRgb();
-        this.hexText.value = this.color.toHex();
-        this.hslText.value = this.color.toHsl();
-        this.numberText.value = this.color.toNumber();
-        this.drawColorPalette(rFromRgb);
-        this.drawColorSample(this.color.toRgb());
-    }
-    runColorChanger(r) {
-        this.drawColorPalette(r);
-        this.color = new Color(r, this.gFromRgb, this.bFromRgb);
-        this.colorPrewiew.style.background = this.color.toRgb();
-        this.rgbText.value = this.color.toRgb();
-        this.hexText.value = this.color.toHex();
-        this.hslText.value = this.color.toHsl();
-        this.numberText.value = this.color.toNumber();
-        this.drawColorSample(this.color.toRgb());
-    }
+    runColorChanger(colorChangerPosition) {
+        let r, g, b;
+        if (colorChangerPosition <= 255) {
+            r = 255;
+            g = 0;
+            b = colorChangerPosition;
+        }
+        if ((255 < colorChangerPosition) && (colorChangerPosition <= 500)) {
+            r = 500 - colorChangerPosition;
+            g = 0;
+            b = 255;
+        }
+        if ((500 < colorChangerPosition) && (colorChangerPosition <= 750)) {
+            r = 0;
+            g = colorChangerPosition - 500;
+            b = 255;
+        }
+        if ((750 < colorChangerPosition) && (colorChangerPosition <= 1000)) {
+            r = 0;
+            g = 255;
+            b = 1000 - colorChangerPosition;
+        }
+        if ((1000 < colorChangerPosition) && (colorChangerPosition <= 1250)) {
+            r = colorChangerPosition - 1000;
+            g = 255;
+            b = 0;
+        }
+        if ((1250 < colorChangerPosition) && (colorChangerPosition <= 1500)) {
+            r = 255;
+            g = 1500 - colorChangerPosition;
+            b = 0;
+        }
+        this.setColorPaletteColor(r, g, b);
+        this.drawColorPalette(this.paletteColor.toRgb());
 
+        this.setColorSample(this.colorSamplePositionX, this.colorSamplePositionY);
+        this.drawColorSample(this.sampleColor.toRgb());
+        this.setColorAsideElements(this.sampleColor);
+    }
+    clickedColor(e) {
+        this.drawColorPalette(this.paletteColor.toRgb());
+        this.setColorSample(e.offsetX, e.offsetY);
+        this.drawColorSample(this.sampleColor.toRgb());
+        this.setColorAsideElements(this.sampleColor);
+    }
 }

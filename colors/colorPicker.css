@@ -2,40 +2,42 @@ body {
     background: yellow;
 }
 
-#colorPalette {
-    background: rgb(138, 102, 066);
+.colorPalette {
+    background: white;
     float: left;
 }
 
-#second {
+.asideContainer {
     float: left;
     width: 300px;
     margin-left: 10px;
 }
 
-#colorPrewiew {
+.colorPrewiew {
     width: 80px;
     height: 200px;
     background: black;
     float: left;
 }
 
-#colorValues {
+.colorValues {
     width: 200px;
     height: 200px;
     margin-left: 10px;
     float: left;
 }
 
-#colorChanger {
+.colorChanger {
     width: 255px;
     height: 20px;
     margin-top: 30px;
     padding: 0;
     clear: both;
+    background: linear-gradient(to right, hsl(0, 100%, 50%), hsl(300, 100%, 50%), hsl(240, 100%, 50%), hsl(180, 100%, 50%), hsl(120, 100%, 50%), hsl(60, 100%, 50%), hsl(0, 100%, 50%));
+    border-radius: 20px;
 }
 
-#text div input {
+.colorValues input {
     display: block;
     text-align: center;
     width: 170px;
